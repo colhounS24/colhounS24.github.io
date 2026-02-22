@@ -18,22 +18,33 @@
   --shadow: rgba(59,130,246,0.4);
 }
 
+/* Reset */
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; scroll-behavior:smooth; }
-
 body { background: var(--bg); color: var(--text); line-height:1.6; }
 
+/* NAVBAR */
 nav {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 1rem 5%; position: sticky; top:0; z-index:1000;
-  background: rgba(15,23,42,0.85); backdrop-filter: blur(8px);
+  display:flex; justify-content:space-between; align-items:center;
+  padding:1rem 5%; position:sticky; top:0; z-index:1000;
+  background: rgba(15,23,42,0.85); backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--border);
 }
-nav h2 { font-weight: 600; }
-nav a { text-decoration: none; color: var(--muted); margin-left: 1.5rem; transition: 0.3s; }
-nav a:hover { color:white; }
+nav h2 { font-weight:600; font-size:1.4rem; }
+.nav-links {
+  display:flex; gap:1.5rem;
+}
+.nav-links a { text-decoration:none; color: var(--muted); font-weight:500; transition:0.3s; }
+.nav-links a:hover { color:white; }
+
+/* HAMBURGER */
+.hamburger {
+  display:none; flex-direction:column; cursor:pointer; gap:5px;
+}
+.hamburger div { width:25px; height:3px; background:white; transition:0.3s; }
 
 /* HERO */
 .hero {
-  display:flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  display:flex; flex-wrap: wrap; justify-content:center; align-items:center;
   gap:3rem; padding:6rem 5rem; background: linear-gradient(135deg,#2563eb,#1e3a8a);
   color:white; border-bottom:1px solid var(--border); border-radius:0 0 20px 20px;
 }
@@ -85,6 +96,10 @@ footer { text-align:center; padding:2rem; border-top:1px solid var(--border); co
 
 /* RESPONSIVE */
 @media(max-width:768px){
+  .nav-links { display:none; position:absolute; top:70px; left:0; width:100%; background: rgba(15,23,42,0.95); flex-direction:column; padding:1rem 0; }
+  .nav-links.active { display:flex; }
+  .nav-links a { padding:1rem; text-align:center; }
+  .hamburger { display:flex; }
   .hero { flex-direction:column; text-align:center; padding:5rem 2rem; }
   .hero-text h1 { font-size:2.2rem; }
   .hero-text h3 { font-size:1.3rem; }
@@ -92,12 +107,14 @@ footer { text-align:center; padding:2rem; border-top:1px solid var(--border); co
 }
 </style>
 </head>
-
 <body>
 
 <nav>
   <h2>colhounS24</h2>
-  <div>
+  <div class="hamburger" id="hamburger">
+    <div></div><div></div><div></div>
+  </div>
+  <div class="nav-links" id="nav-links">
     <a href="#projects">Projects</a>
     <a href="#contact">Contact</a>
   </div>
@@ -136,6 +153,13 @@ footer { text-align:center; padding:2rem; border-top:1px solid var(--border); co
 <footer>© 2026 colhounS24 · Built with GitHub Pages</footer>
 
 <script>
+/* Hamburger menu toggle */
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('nav-links');
+hamburger.addEventListener('click', () => {
+  navLinks.classList.toggle('active');
+});
+
 /* Load GitHub Repos */
 fetch("https://api.github.com/users/colhounS24/repos?sort=updated")
   .then(res=>res.json())
@@ -185,6 +209,5 @@ form.addEventListener("submit",async e=>{
   }
 });
 </script>
-
 </body>
 </html>

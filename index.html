@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>colhounS24 | Developer Portfolio</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --primary: #2563eb;
+  --bg: #f8fafc;
+  --text: #0f172a;
+  --card: #ffffff;
+}
+
+body.dark {
+  --bg: #0f172a;
+  --text: #f8fafc;
+  --card: #1e293b;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  transition: 0.3s ease;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 8%;
+  background: var(--card);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+nav h2 { font-weight: 700; }
+
+nav a {
+  text-decoration: none;
+  color: var(--text);
+  margin-left: 1.5rem;
+  font-weight: 500;
+}
+
+.toggle {
+  cursor: pointer;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  background: var(--primary);
+  color: white;
+  font-size: 0.8rem;
+}
+
+/* HERO */
+.hero {
+  text-align: center;
+  padding: 6rem 8%;
+  background: linear-gradient(135deg, #2563eb, #1e3a8a);
+  color: white;
+}
+
+.hero img {
+  width: 140px;
+  border-radius: 50%;
+  border: 4px solid white;
+  margin-bottom: 1.5rem;
+}
+
+.hero h1 { font-size: 2.8rem; }
+
+.btn {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.8rem 1.8rem;
+  border-radius: 30px;
+  background: white;
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+  margin-right: 1rem;
+}
+
+/* SECTIONS */
+section { padding: 4rem 8%; }
+
+h2 { text-align: center; margin-bottom: 3rem; }
+
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.card {
+  background: var(--card);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  transition: 0.4s;
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.badges span {
+  background: var(--primary);
+  color: white;
+  font-size: 0.7rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 12px;
+  margin-right: 0.4rem;
+}
+
+.contact form {
+  max-width: 600px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact input, .contact textarea {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <h2>colhounS24</h2>
+  <div>
+    <a href="#projects">Projects</a>
+    <a href="#resume">Resume</a>
+    <a href="#contact">Contact</a>
+    <span class="toggle" onclick="toggleDark()">Toggle Mode</span>
+  </div>
+</nav>
+
+<section class="hero">
+  <img src="https://avatars.githubusercontent.com/colhounS24" alt="Profile">
+  <h1>Software Developer</h1>
+  <p>Building scalable, modern web applications.</p>
+  <a href="#projects" class="btn">View Projects</a>
+  <a href="resume.pdf" class="btn" download>Download Resume</a>
+</section>
+
+<section id="projects">
+  <h2>GitHub Projects</h2>
+  <div class="projects" id="repo-container"></div>
+</section>
+
+<section id="resume">
+  <h2>Resume</h2>
+  <p style="text-align:center;">Download my professional resume below.</p>
+  <div style="text-align:center;">
+    <a href="resume.pdf" class="btn" download>Download Resume</a>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <h2>Contact Me</h2>
+  <form action="https://formspree.io/f/yourFormID" method="POST">
+    <input type="text" name="name" placeholder="Your Name" required>
+    <input type="email" name="_replyto" placeholder="Your Email" required>
+    <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+    <button type="submit" class="btn">Send Message</button>
+  </form>
+</section>
+
+<footer>
+  © 2026 colhounS24 · Built with GitHub Pages
+</footer>
+
+<script>
+// Dark Mode
+function toggleDark() {
+  document.body.classList.toggle("dark");
+  localStorage.setItem("darkMode", document.body.classList.contains("dark"));
+}
+if(localStorage.getItem("darkMode") === "true"){
+  document.body.classList.add("dark");
+}
+
+// Load GitHub Repos
+fetch("https://api.github.com/users/colhounS24/repos?sort=updated")
+  .then(res => res.json())
+  .then(data => {
+    const container = document.getElementById("repo-container");
+    data.slice(0,6).forEach(repo => {
+      const card = document.createElement("div");
+      card.classList.add("card");
+      card.innerHTML = `
+        <h3>${repo.name}</h3>
+        <p>${repo.description || "No description available."}</p>
+        <div class="badges">
+          ${repo.language ? `<span>${repo.language}</span>` : ""}
+        </div>
+        <br>
+        <a href="${repo.html_url}" target="_blank" class="btn">Code</a>
+        ${repo.homepage ? `<a href="${repo.homepage}" target="_blank" class="btn">Live Demo</a>` : ""}
+      `;
+      container.appendChild(card);
+    });
+
+    // Scroll animation
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add("visible");
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll(".card").forEach(card => {
+      observer.observe(card);
+    });
+  });
+</script>
+
+</body>
+</html>
